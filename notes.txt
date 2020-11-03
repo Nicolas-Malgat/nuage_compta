@@ -1,0 +1,36 @@
+Réseau neuronal convolutif
+
+poids
+
+CHOIX DES HYPERPARAMETRES
+
+nbr de filtre et leur forme
+
+filtre =?= pooling:
+le pooling est un filtre de compression
+
+METHODES DE REGULARISATION
+
+dropout:
+Le dropout peut permettre une accélération de l'apprentissage.
+
+En phase de test, les auteurs proposent de pondérer chaque poids appris par sa probabilité d'activation pendant l'apprentissage. 
+Pour un dropout avec un probabilité 0.5 par exemple, cela revient à diviser les poids par deux.
+
+
+Pooling stochastique:
+
+Le pooling stochastique reprend le même principe que le Max-pooling, mais la sortie choisie sera prise au hasard, 
+selon une distribution multinomiale définie en fonction de l'activité de la zone adressée par le pool.
+
+Dans les faits, ce système s'apparente à faire du Max-pooling avec un grand nombre d'images similaires, 
+qui ne varient que par des déformations localisées. On peut aussi considérer cette méthode comme une adaptation 
+à des déformations élastiques de l'image36. C'est pourquoi cette méthode est très efficace sur les images MNIST 
+(base de données d'images représentant des chiffres manuscrits). La force du pooling stochastique est de voir ses 
+performances croître de manière exponentielle avec le nombre de couches du réseau.
+
+-----------------------------------------------------------------------------------------------------------------
+
+handwritten_data est une image ?
+
+les images du jeu de données sont sur fond noir alors que l'évaluation est sur fond blanc
