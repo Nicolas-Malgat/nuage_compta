@@ -32,5 +32,3 @@ performances croître de manière exponentielle avec le nombre de couches du ré
 -----------------------------------------------------------------------------------------------------------------
 
 handwritten_data est une image ?
-
-les images du jeu de données sont sur fond noir alors que l'évaluation est sur fond blanc
