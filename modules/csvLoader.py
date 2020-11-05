@@ -3,7 +3,7 @@ from os import path, makedirs
 
 class csvLoader:
 
-    LOCATION = r'../datas/CURATED/'
+    LOCATION = r'../datas/RAW/alphabet-dataset/'
 
     @staticmethod
     def save(df: pd.DataFrame, name: str, save_index=True):
