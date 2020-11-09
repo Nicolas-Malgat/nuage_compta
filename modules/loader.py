@@ -1,4 +1,8 @@
-from os import path, makedirs
+from random import sample
+from os import path, makedirs, sep
+import os
+from PIL import Image
+import numpy
 
 import csv
 import requests
@@ -6,6 +10,17 @@ import sys
 import zipfile
 
 
+RAW_LOCAL_PATH = os.sep.join([ '..', '..', 'datas', 'RAW', 'alphabet-dataset' ])
+
+# NOTE: PAS SUR QUE CE SOIT UTILE
+ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+def letter_to_int(self, letter:str):
+    return ALPHABET.index(letter)
+
+def int_to_letter(self, index:int):
+    return ALPHABET[index]
+# FIN DE NOTE
 
 class ComptaDataLoader:
 
@@ -93,3 +108,71 @@ class ComptaDataLoader:
         with zipfile.ZipFile(TXT_REMOTE_PATH, 'r') as zip_ref:
             zip_ref.extractall(RAW_LOCAL_PATH)
         print('Data extract successfully')
+
+    # RECUPERATION ALEATOIRE DES LETTRES
+    def get_alphabet_data(self, nb_data_by_letter=500):
+        alphabet_folders = self.__load_folders()
+        list_letters = self.__list_letters(alphabet_folders, nb_data_by_letter)
+        alphabet_data = self.__load_data_from_img(list_letters)
+        
+        data, labels = self.__reconditionnement(alphabet_data)
+
+        return data, labels
+        
+
+    def __reconditionnement(self, alphabet):
+        """ Cette fonction reçoit les images de l'alphabet sous ce format:
+            [
+                [ numpyArray, numpyArray, numpyArray ... ], #les A
+                [ numpyArray, numpyArray, numpyArray ... ], #les B
+                etc ...
+            ]
+
+            Elle renvoit deux listes contenant les images et les labels séparément
+        """
+        data, labels = list(), list()
+
+        for i in range(len(alphabet)):
+            for j in range(len(alphabet[i])):
+                data.append(alphabet[i][j])
+                labels.append(i)
+
+        return data, labels
+
+
+    def __load_folders(self):
+        return [
+                    RAW_LOCAL_PATH+os.sep+dir 
+                for dir in os.listdir(RAW_LOCAL_PATH) 
+            if os.path.isdir(RAW_LOCAL_PATH+os.sep+dir)
+        ]
+    
+    def __list_letters(self, folders, nb_letter):
+        return [ 
+                [ 
+                    f+os.sep+letter 
+                for letter in sample(os.listdir(f), nb_letter) 
+                ] 
+            for f in folders
+        ]
+
+    def __load_data_from_img(self, list_letters):
+        """
+            [
+                [ str (fichier), str (fichier), str (fichier) ... ], #les A
+                [ str (fichier), str (fichier), str (fichier) ... ], #les B
+                etc ...
+            ]
+        """
+        return [
+            [ 
+                    numpy.asarray(Image.open(img)) 
+                for img in letters 
+            ]
+            for letters in list_letters
+        ]
+
+
+if __name__ == "__main__":
+    loader = ComptaDataLoader()
+    loader.get_alphabet_data()
