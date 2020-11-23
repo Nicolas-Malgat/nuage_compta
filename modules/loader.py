@@ -10,6 +10,9 @@ import requests
 import sys
 import zipfile
 
+ZIP_REMOTE_PATH = "https://stdatalake006.blob.core.windows.net/public/alphabet-dataset.zip"
+ZIP_FOLDER_LOCAL_PATH = "../datas/ZIP/"
+ZIP_FILE_LOCAL_PATH = ZIP_FOLDER_LOCAL_PATH + "alphabet-dataset.zip"
 
 RAW_LOCAL_PATH = os.sep.join([ '..', 'datas', 'RAW', 'alphabet-dataset' ])
 if __name__ == "__main__":
@@ -47,20 +50,17 @@ class ComptaDataLoader:
         Ensure if data are already loaded. Download if missing
         '''
 
-        if path.exists(TXT_LOCAL_PATH) == False:
+        if path.exists(ZIP_FOLDER_LOCAL_PATH) == False:
             try:
-                makedirs(TXT_LOCAL_PATH)
+                makedirs(ZIP_FOLDER_LOCAL_PATH)
             except OSError:
-                print ("Creation of the directory %s failed" % TXT_LOCAL_PATH)
+                print ("Creation of the directory %s failed" % ZIP_FOLDER_LOCAL_PATH)
                 exit(1)
             else:
-                print ("Successfully created the directory %s " % TXT_LOCAL_PATH)
+                print ("Successfully created the directory %s " % ZIP_FOLDER_LOCAL_PATH)
 
-        if path.exists(RAW_LOCAL_PATH) == False:
+        if path.exists(ZIP_FILE_LOCAL_PATH) == False:
             self._download_data()
-
-        # if len(listdir(RAW_LOCAL_PATH)) == 0:
-        #     self._extract_data()
 
         print('Les fichiers sont correctement téléchargés')
 
@@ -71,8 +71,8 @@ class ComptaDataLoader:
         '''
         
         print('Downloading data')
-        with open(RAW_LOCAL_PATH, "wb") as f:
-            response = requests.get(TXT_REMOTE_PATH, stream=True)
+        with open(ZIP_FILE_LOCAL_PATH, "wb") as f:
+            response = requests.get(ZIP_REMOTE_PATH, stream=True)
             total_length = response.headers.get('content-length')
 
             if total_length is None: # no content length header
@@ -98,8 +98,8 @@ class ComptaDataLoader:
         '''
 
         print('Begin extracting data')
-        with zipfile.ZipFile(TXT_REMOTE_PATH, 'r') as zip_ref:
-            zip_ref.extractall(RAW_LOCAL_PATH)
+        with zipfile.ZipFile(ZIP_FILE_LOCAL_PATH, 'r') as zip_ref:
+            zip_ref.extractall(os.sep.join([ '..', '..', 'datas', 'RAW' ]))
         print('Data extract successfully')
 
     # NOTE: PAS SUR QUE CE SOIT UTILE
@@ -185,8 +185,6 @@ class ComptaDataLoader:
                 nb_sample = len(os.listdir(f))
             else:
                 nb_sample = nb_letter
-
-            # print(f,len(os.listdir(f)),nb_sample)
 
             liste_lettre = list()
 
