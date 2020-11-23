@@ -29,7 +29,7 @@ Pour avoir une copie locale et lancer le programme, suivez ces étapes.
 
 1. Cloner le répertoire
 ```git
-git clone https://github.com/diem-ai/Immothep.git
+git clone https://github.com/Nicolas-Malgat/nuage_compta.git
 ```
 2. Créer un environnement conda avec
 ```bash
