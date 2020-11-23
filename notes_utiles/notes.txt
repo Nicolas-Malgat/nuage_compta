@@ -28,7 +28,3 @@ qui ne varient que par des déformations localisées. On peut aussi considérer 
 à des déformations élastiques de l'image36. C'est pourquoi cette méthode est très efficace sur les images MNIST 
 (base de données d'images représentant des chiffres manuscrits). La force du pooling stochastique est de voir ses 
 performances croître de manière exponentielle avec le nombre de couches du réseau.
-
------------------------------------------------------------------------------------------------------------------
-
-handwritten_data est une image ?
